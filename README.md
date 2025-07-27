@@ -1,1 +1,1 @@
-# fantast-command-center
+# fantasy-command-center

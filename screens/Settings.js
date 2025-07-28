@@ -1,62 +1,67 @@
-import React, { useState } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, Switch } from 'react-native';
+import { useState } from 'react';
 
-export default function Settings() {
-  const [showBest, setShowBest] = useState(true);
-  const [showProjRecord, setShowProjRecord] = useState(true);
-  const [showPlayersRemaining, setShowPlayersRemaining] = useState(true);
+const Settings = () => {
+  const [darkMode, setDarkMode] = useState(true);
+  const [notifications, setNotifications] = useState(true);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Customize Dashboard</Text>
+      <Text style={styles.header}>Settings</Text>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>Show Best Performance</Text>
+        <Text style={styles.label}>Dark Mode</Text>
         <Switch
-          value={showBest}
-          onValueChange={() => setShowBest(prev => !prev)}
+          value={darkMode}
+          onValueChange={setDarkMode}
+          trackColor={{ false: '#888', true: '#00ff88' }}
+          thumbColor="#121212"
         />
       </View>
 
       <View style={styles.settingRow}>
-        <Text style={styles.label}>Show Projected Record</Text>
+        <Text style={styles.label}>Notifications</Text>
         <Switch
-          value={showProjRecord}
-          onValueChange={() => setShowProjRecord(prev => !prev)}
+          value={notifications}
+          onValueChange={setNotifications}
+          trackColor={{ false: '#888', true: '#00ff88' }}
+          thumbColor="#121212"
         />
       </View>
 
-      <View style={styles.settingRow}>
-        <Text style={styles.label}>Show Players Remaining</Text>
-        <Switch
-          value={showPlayersRemaining}
-          onValueChange={() => setShowPlayersRemaining(prev => !prev)}
-        />
-      </View>
+      <Text style={styles.footer}>More settings coming soon...</Text>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000',
     flex: 1,
-    padding: 16
+    backgroundColor: '#1e1e1e',
+    padding: 20
   },
-  title: {
-    color: '#fff',
-    fontSize: 20,
+  header: {
+    fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 20
+    color: '#00ff88',
+    marginBottom: 32
   },
   settingRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 16
+    marginBottom: 24
   },
   label: {
-    color: '#ccc',
-    fontSize: 16
+    fontSize: 18,
+    color: '#fff'
+  },
+  footer: {
+    marginTop: 40,
+    fontSize: 14,
+    color: '#888'
   }
 });
+
+export default Settings;

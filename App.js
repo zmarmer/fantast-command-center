@@ -1,27 +1,23 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Dashboard from './screens/Dashboard';
-import Settings from './screens/Settings';
-import LeagueDetail from './screens/LeagueDetail';
+import { View, Text, StyleSheet } from 'react-native';
 
-const Tab = createBottomTabNavigator();
-
-export default function App() {
+export default function Dashboard() {
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerShown: false,
-          tabBarStyle: { backgroundColor: '#121212' },
-          tabBarActiveTintColor: '#00ff88',
-          tabBarInactiveTintColor: '#888'
-        }}
-      >
-        <Tab.Screen name="Dashboard" component={Dashboard} />
-        <Tab.Screen name="League Detail" component={LeagueDetail} />
-        <Tab.Screen name="Settings" component={Settings} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <View style={styles.container}>
+      <Text style={styles.text}>Fantasy Command Center - Hello Zack!</Text>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000',
+  },
+  text: {
+    color: '#00ff88',
+    fontSize: 18,
+  },
+});

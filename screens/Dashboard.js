@@ -1,91 +1,93 @@
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
 
-const MOCK_LEAGUES = [
-  {
-    name: 'Sleeper Dynasty',
-    yourTeam: 'The Blitzers',
-    score: 108.4,
-    proj: 132.9,
-    oppTeam: 'Gridiron Gang',
-    oppScore: 104.6,
-    oppProj: 129.1,
-    playing: 5,
-    remaining: 3
-  },
-  {
-    name: 'ESPN Redraft',
-    yourTeam: 'Denver Dawgs',
-    score: 96.2,
-    proj: 115.7,
-    oppTeam: 'Chubb Club',
-    oppScore: 101.4,
-    oppProj: 121.2,
-    playing: 3,
-    remaining: 5
-  }
-];
-
-export default function Dashboard() {
+const Dashboard = () => {
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Projected Record: 1–1</Text>
-      <Text style={styles.sub}>Best Performance: The Blitzers (108.4)</Text>
-      <Text style={styles.sub}>Closest Matchup: Denver Dawgs vs Chubb Club</Text>
+      <Text style={styles.header}>Fantasy Command Center</Text>
 
-      {MOCK_LEAGUES.map((league, idx) => (
-        <View key={idx} style={styles.card}>
-          <Text style={styles.leagueName}>{league.name}</Text>
-          <Text style={styles.score}>
-            {league.yourTeam}: {league.score.toFixed(1)} ({league.proj.toFixed(1)})
-          </Text>
-          <Text style={styles.score}>
-            {league.oppTeam}: {league.oppScore.toFixed(1)} ({league.oppProj.toFixed(1)})
-          </Text>
-          <Text style={styles.status}>
-            Playing: {league.playing} | Yet to Play: {league.remaining}
-          </Text>
-        </View>
-      ))}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Highest Score</Text>
+        <Text style={styles.score}>145.2 - Team Juggernaut</Text>
+      </View>
+
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>Closest Matchup</Text>
+        <Text style={styles.score}>112.8 vs 112.4 — Thanos vs Lucky Duck</Text>
+      </View>
+
+      <Text style={styles.subHeader}>Your Leagues</Text>
+
+      <View style={styles.leagueCard}>
+        <Text style={styles.leagueName}>Sleeper League</Text>
+        <Text style={styles.matchup}>You: 108.6 (proj 125) vs Rival: 117.3 (proj 120)</Text>
+        <Text style={styles.players}>Playing: 4 | Yet to Play: 3</Text>
+      </View>
+
+      <View style={styles.leagueCard}>
+        <Text style={styles.leagueName}>Fantrax Dynasty</Text>
+        <Text style={styles.matchup}>You: 92.3 (proj 105) vs Top Dog: 134.1 (proj 140)</Text>
+        <Text style={styles.players}>Playing: 3 | Yet to Play: 5</Text>
+      </View>
     </ScrollView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: '#1e1e1e',
     padding: 16,
-    backgroundColor: '#000',
     flex: 1
   },
-  title: {
-    color: '#fff',
-    fontSize: 22,
+  header: {
+    color: '#00ff88',
+    fontSize: 28,
     fontWeight: 'bold',
+    marginBottom: 24
+  },
+  subHeader: {
+    color: '#fff',
+    fontSize: 20,
+    marginTop: 32,
     marginBottom: 12
   },
-  sub: {
-    color: '#ccc',
-    marginBottom: 6
+  section: {
+    backgroundColor: '#2a2a2a',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 16
   },
-  card: {
-    backgroundColor: '#1e1e1e',
-    padding: 12,
-    borderRadius: 8,
+  sectionTitle: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
+  },
+  score: {
+    color: '#ccc',
+    fontSize: 16,
+    marginTop: 4
+  },
+  leagueCard: {
+    backgroundColor: '#2a2a2a',
+    padding: 16,
+    borderRadius: 12,
     marginBottom: 16
   },
   leagueName: {
     color: '#00ff88',
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 6
+    fontSize: 18,
+    fontWeight: 'bold'
   },
-  score: {
+  matchup: {
     color: '#fff',
-    fontSize: 14
+    fontSize: 16,
+    marginTop: 4
   },
-  status: {
-    marginTop: 6,
-    color: '#aaa',
-    fontSize: 12
+  players: {
+    color: '#888',
+    fontSize: 14,
+    marginTop: 2
   }
 });
+
+export default Dashboard;

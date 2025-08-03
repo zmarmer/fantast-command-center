@@ -1,93 +1,74 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useContext } from 'react';
+import { View, Text, StyleSheet, FlatList, Image } from 'react-native';
+import { AppContext } from '../context/AppContext';
 
-const Dashboard = () => {
-  return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.header}>Fantasy Command Center</Text>
+export default function Dashboard() {
+  const { leagues, settings } = useContext(AppContext);
 
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Highest Score</Text>
-        <Text style={styles.score}>145.2 - Team Juggernaut</Text>
+  const bestPerformance = leagues.reduce((best, l) => (l.score > best.score ? l : best), leagues[0]);
+  const closestMatchup = leagues.reduce((closest, l) => {
+    const diff = Math.abs(l.score - l.oppScore);
+    const closestDiff = Math.abs(closest.score - closest.oppScore);
+    return diff < closestDiff ? l : closest;
+  }, leagues[0]);
+
+  const renderLeague = ({ item }) => (
+    <View style={[styles.card, { backgroundColor: '#1c1c1c' }]}>
+      <View style={styles.cardHeader}>
+        <Text style={styles.leagueName}>{item.name} [{item.record}]</Text>
+        {item.icon && (
+          <Image source={{ uri: item.icon }} style={styles.icon} />
+        )}
       </View>
-
-      <View style={styles.section}>
-        <Text style={styles.sectionTitle}>Closest Matchup</Text>
-        <Text style={styles.score}>112.8 vs 112.4 — Thanos vs Lucky Duck</Text>
-      </View>
-
-      <Text style={styles.subHeader}>Your Leagues</Text>
-
-      <View style={styles.leagueCard}>
-        <Text style={styles.leagueName}>Sleeper League</Text>
-        <Text style={styles.matchup}>You: 108.6 (proj 125) vs Rival: 117.3 (proj 120)</Text>
-        <Text style={styles.players}>Playing: 4 | Yet to Play: 3</Text>
-      </View>
-
-      <View style={styles.leagueCard}>
-        <Text style={styles.leagueName}>Fantrax Dynasty</Text>
-        <Text style={styles.matchup}>You: 92.3 (proj 105) vs Top Dog: 134.1 (proj 140)</Text>
-        <Text style={styles.players}>Playing: 3 | Yet to Play: 5</Text>
-      </View>
-    </ScrollView>
+      <Text style={styles.scoreLine}>
+        {item.name.includes('Dynasty') ? 'The Blitzers' : 'Denver Dawgs'}: {item.score} ({item.projected})
+      </Text>
+      <Text style={styles.scoreLine}>
+        {item.opponent}: {item.oppScore} ({item.oppProjected})
+      </Text>
+      <Text style={styles.subtext}>Playing: {item.playing} | Yet to Play: {item.yetToPlay}</Text>
+    </View>
   );
-};
+
+  return (
+    <View style={[styles.container, { backgroundColor: settings.backgroundColor }]}>
+      {settings.showProjectedRecord && (
+        <Text style={styles.header}>Projected Record: 1–1</Text>
+      )}
+      {settings.showBestPerformance && (
+        <Text style={styles.subheader}>Best Performance: {bestPerformance.name} ({bestPerformance.score})</Text>
+      )}
+      {settings.showClosestMatchup && (
+        <Text style={styles.subheader}>Closest Matchup: {closestMatchup.name} vs {closestMatchup.opponent}</Text>
+      )}
+
+      <FlatList
+        data={leagues}
+        keyExtractor={(item) => item.id}
+        renderItem={renderLeague}
+        contentContainerStyle={{ paddingBottom: 80 }}
+      />
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: '#1e1e1e',
-    padding: 16,
-    flex: 1
-  },
-  header: {
-    color: '#00ff88',
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 24
-  },
-  subHeader: {
-    color: '#fff',
-    fontSize: 20,
-    marginTop: 32,
-    marginBottom: 12
-  },
-  section: {
-    backgroundColor: '#2a2a2a',
-    padding: 16,
+  container: { flex: 1, padding: 12 },
+  header: { color: '#fff', fontSize: 18, fontWeight: 'bold', marginBottom: 4 },
+  subheader: { color: '#bbb', fontSize: 14, marginBottom: 8 },
+  card: {
+    padding: 12,
+    marginVertical: 8,
     borderRadius: 12,
-    marginBottom: 16
+    shadowColor: '#000',
+    shadowOpacity: 0.4,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 5
   },
-  sectionTitle: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '600'
-  },
-  score: {
-    color: '#ccc',
-    fontSize: 16,
-    marginTop: 4
-  },
-  leagueCard: {
-    backgroundColor: '#2a2a2a',
-    padding: 16,
-    borderRadius: 12,
-    marginBottom: 16
-  },
-  leagueName: {
-    color: '#00ff88',
-    fontSize: 18,
-    fontWeight: 'bold'
-  },
-  matchup: {
-    color: '#fff',
-    fontSize: 16,
-    marginTop: 4
-  },
-  players: {
-    color: '#888',
-    fontSize: 14,
-    marginTop: 2
-  }
+  cardHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  leagueName: { color: '#00ff88', fontSize: 16, fontWeight: 'bold' },
+  scoreLine: { color: '#fff', fontSize: 14, marginTop: 4 },
+  subtext: { color: '#bbb', fontSize: 12, marginTop: 4 },
+  icon: { width: 24, height: 24, marginLeft: 8, borderRadius: 12 }
 });
-
-export default Dashboard;
